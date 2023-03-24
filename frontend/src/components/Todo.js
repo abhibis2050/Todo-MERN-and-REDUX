@@ -4,8 +4,12 @@ import { createTodo, fetchTodo } from "../reducers/todoReducer";
 const Todo = () => {
   const [todo, setTodo] = useState("");
 
-  const {  } = useSelector((state) => console.log(state));
+  const todos  = useSelector((state) => {
+    // console.log(state.todos,"<----State");
+    return state.todos
+});
 //   console.log(todos,"todos page");
+
   const dispatch = useDispatch();
 
 
@@ -29,13 +33,13 @@ const Todo = () => {
       </button>
 
 
-      {/* <ul className="collection">
+      <ul className="collection">
         {
         todos?.map((item)=>{
             return  <li className="collection-item" key={item._id}>{item.todo}</li>
         })        
         }       
-      </ul> */}
+      </ul>
 
     </div>
   );

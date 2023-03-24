@@ -14,7 +14,7 @@ export const createTodo = createAsyncThunk("createtodo", async (body) => {
 
 export const fetchTodo = createAsyncThunk("fetchtodo", async () => {
   const result = await fetch3("http://localhost:5000/api/todo/gettodo", "get");
-  console.log(result, "<-------");
+//   console.log(result, "<-------");
   return result;
 });
 
@@ -29,8 +29,7 @@ export const todoReducer = createSlice({
       }
     });
     builder.addCase(fetchTodo.fulfilled, (state, { payload: { data } }) => {
-      // console.log(data,"data");
-
+      
       // data returns a an array and we have to
       // update the entire initialstate that is an array
 
@@ -39,6 +38,7 @@ export const todoReducer = createSlice({
     });
   },
 });
+
 
 // export const {} = todoReducer.actions;
 export default todoReducer.reducer;
