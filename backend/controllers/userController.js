@@ -5,22 +5,23 @@ const bcrypt = require("bcrypt");
 exports.registerUser = async (req, res) => {
   try {
     const { name, email, password, pic } = req.body;
-    if (!name || !email || !password) {
-      res.status(400).send({ message: "Please Enter all the Feilds" });
+    if (
+      // !name 
+      // ||
+       !email || !password) {
+      return res.status(400).send({ status:false,message: "Please Enter all the Feilds" });
     }
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).send({ message: "User already exists" });
+      return res.status(400).send({status:false, message: "User already exists" });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-
     const user = await User.create({
       name,
       email,
-      password:hashPassword,
-      pic,
+      password: hashPassword,
     });
 
     if (user) {
@@ -29,8 +30,7 @@ exports.registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
-        pic: user.pic,
-        token: generateToken({id:user._id}),
+        token: generateToken({ id: user._id }),
       });
     } else {
       return res.status(400).send({ message: "user not found" });
@@ -40,9 +40,8 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-
 // login
-exports.authUser = async(req,res)=>{
+exports.authUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -52,46 +51,42 @@ exports.authUser = async(req,res)=>{
       return res.send({ success: false, message: "Invalid Email or Password" });
     }
 
-    
     //to check if the password matches or not
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if(!isMatch){
-      res.send({success: false,message:"password didnot match"})
+    if (!isMatch) {
+      res.send({ success: false, message: "password didnot match" });
     }
-    
-    res.send({success: true,
+
+    res.send({
+      success: true,
       _id: user._id,
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      pic: user.pic,
-      token: generateToken({id:user._id}),
-      message:"Login Successful"
+      token: generateToken({ id: user._id }),
+      message: "Login Successful",
     });
-    
   } catch (error) {
     return res.status(500).send({ success: false, message: error.message });
   }
-}
+};
 
-
-exports.allUsers = async(req,res)=>{
+exports.allUsers = async (req, res) => {
   try {
     const keyword = req.query.search
-    ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { email: { $regex: req.query.search, $options: "i" } },
-        ],
-      }
-    : {};
+      ? {
+          $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+          ],
+        }
+      : {};
     // console.log(req.user);
-console.log(keyword);
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
-  res.send(users);
-
+    console.log(keyword);
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users);
   } catch (error) {
     return res.status(500).send({ success: false, message: error.message });
   }
-}
+};
