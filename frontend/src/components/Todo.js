@@ -1,25 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createTodo, fetchTodo } from "../reducers/todoReducer";
+import { createTodo, deleteTodo, fetchTodo } from "../reducers/todoReducer";
 const Todo = () => {
   const [todo, setTodo] = useState("");
 
-  const todos  = useSelector((state) => {
+  const todos = useSelector((state) => {
     // console.log(state.todos,"<----State");
-    return state.todos
-});
-//   console.log(todos,"todos page");
+    return state.todos;
+  });
+  //   console.log(todos,"todos page");
 
   const dispatch = useDispatch();
-
 
   const addTodo = () => {
     dispatch(createTodo({ todo: todo }));
   };
 
-  useEffect(()=>{
-    dispatch(fetchTodo())
-  },[])
+  useEffect(() => {
+    dispatch(fetchTodo());
+  }, []);
 
   return (
     <div>
@@ -32,15 +31,18 @@ const Todo = () => {
         ADD TODO
       </button>
 
-
       <ul className="collection">
-        {
-        todos?.map((item)=>{
-            return  <li className="collection-item" key={item._id}>{item.todo}</li>
-        })        
-        }       
+        {todos?.map((item) => {
+          return (
+            <li className="collection-item" key={item._id}
+            onClick={()=>dispatch(deleteTodo(item._id))}
+            
+            >
+              {item.todo}
+            </li>
+          );
+        })}
       </ul>
-
     </div>
   );
 };

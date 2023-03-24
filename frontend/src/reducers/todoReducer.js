@@ -18,6 +18,12 @@ export const fetchTodo = createAsyncThunk("fetchtodo", async () => {
   return result;
 });
 
+export const deleteTodo = createAsyncThunk("deletetodo", async (id) => {
+    const result = await fetch3(`http://localhost:5000/api/todo/remove/${id}`, "delete");
+    console.log(result, "<-------"); 
+    return result;
+  });
+
 export const todoReducer = createSlice({
   name: "todo",
   initialState,
@@ -36,8 +42,16 @@ export const todoReducer = createSlice({
       // state=data (we cannot write this) we have to write
       return data;
     });
+    builder.addCase(deleteTodo.fulfilled, (state, { payload: { data } }) => {
+     const removedTodo =  state.filter((item)=>{
+        return item._id !== data._id
+      })
+      return removedTodo
+      });
+      
   },
 });
+
 
 
 // export const {} = todoReducer.actions;
