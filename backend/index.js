@@ -5,10 +5,7 @@ const app = express();
 const cors = require("cors");
 const connectWithMongodb = require("./config/db");
 require("dotenv").config();
-const morgan = require("morgan")
-
-
-
+const morgan = require("morgan");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,9 +31,8 @@ app.get("/", (req, res) => {
   res.send("app is working");
 });
 
-
-app.use("/api/user",require("./routes/userRoutes"))
-app.use("/api/todo",require("./routes/todoRoutes"))
+app.use("/api/user", require("./routes/userRoutes"));
+app.use("/api/todo", require("./routes/todoRoutes"));
 
 // port
 const PORT = process.env.PORT || 5000;

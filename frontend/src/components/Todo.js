@@ -1,11 +1,44 @@
-import React from 'react'
-
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { createTodo, fetchTodo } from "../reducers/todoReducer";
 const Todo = () => {
+  const [todo, setTodo] = useState("");
+
+  const { todos } = useSelector((state) => state.todos);
+  console.log(todos,"todos page");
+  const dispatch = useDispatch();
+
+
+  const addTodo = () => {
+    dispatch(createTodo({ todo: todo }));
+  };
+
+  useEffect(()=>{
+    dispatch(fetchTodo())
+  },[])
+
   return (
     <div>
-      todo
-    </div>
-  )
-}
+      <input
+        placeholder="Write Todo Here"
+        value={todo}
+        onChange={(e) => setTodo(e.target.value)}
+      />
+      <button className="btn" onClick={() => addTodo()}>
+        ADD TODO
+      </button>
 
-export default Todo
+
+      <ul className="collection">
+        {
+        todos?.map((item)=>{
+            return  <li className="collection-item" key={item._id}>{item.todo}</li>
+        })        
+        }       
+      </ul>
+
+    </div>
+  );
+};
+
+export default Todo;

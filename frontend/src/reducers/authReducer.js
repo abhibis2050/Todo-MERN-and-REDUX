@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { fetch2 } from "../helpers/fetch2";
 
 const initialState={
     token:"",
@@ -6,18 +7,6 @@ const initialState={
     error:""
 
 }
-
-
-const fetch2 = async(api,body,token="")=>{
-const res = await fetch(api,{
-    method:"post",
-    headers:{
-        "Content-Type":"application/json"
-    },
-    body:JSON.stringify(body)
-  })
-  return await res.json()
-} 
 
 
 export const signupUser = createAsyncThunk(
