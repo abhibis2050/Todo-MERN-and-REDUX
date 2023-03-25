@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { deleteToken } from "../reducers/authReducer";
 import { createTodo, deleteTodo, fetchTodo } from "../reducers/todoReducer";
 const Todo = () => {
   const [todo, setTodo] = useState("");
@@ -15,6 +16,10 @@ const Todo = () => {
   const addTodo = () => {
     dispatch(createTodo({ todo: todo }));
   };
+
+  const logout = ()=>{
+dispatch(deleteToken())
+  }
 
   useEffect(() => {
     dispatch(fetchTodo());
@@ -43,6 +48,7 @@ const Todo = () => {
           );
         })}
       </ul>
+      <button className="btn" onClick={()=>logout()}>LogOut</button>
     </div>
   );
 };
