@@ -14,7 +14,7 @@ export const createTodo = createAsyncThunk("createtodo", async (body) => {
 
 export const fetchTodo = createAsyncThunk("fetchtodo", async () => {
   const result = await fetch3("http://localhost:5000/api/todo/gettodo", "get");
-//   console.log(result, "<-------");
+  console.log(result, "<-------");
   return result;
 });
 
